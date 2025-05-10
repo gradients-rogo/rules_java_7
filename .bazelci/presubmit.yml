@@ -1,0 +1,93 @@
+---
+build_targets: &build_targets
+  - "//..."
+  - "@remote_java_tools//java_tools/..."
+  # TODO: Look into broken targets in //toolchains
+  - "-//toolchains/..."
+  - "-//test/repo/..."
+
+build_targets_bzlmod: &build_targets_bzlmod
+  - "//..."
+  - "@remote_java_tools//java_tools/..."
+  - "-//toolchains/..."
+  # TODO(pcloudy): pkg_tar doesn't work with Bzlmod due to https://github.com/bazelbuild/bazel/issues/14259
+  # Enable once the issue is fixed.
+  - "-//distro/..."
+  - "-//test/repo/..."
+
+test_targets: &test_targets
+  - "//test/..."
+
+buildifier: latest
+
+tasks:
+# TODO: add config for 8.0.0 once released
+# Bazel 7.x
+  ubuntu2004:
+    name: "Bazel 7.x"
+    bazel: "7.3.2"
+    build_targets: *build_targets
+    test_targets: *test_targets
+  ubuntu2004_integration:
+    name: "Bazel 7.x Integration"
+    bazel: "7.3.2"
+    platform: ubuntu2004
+    working_directory: "test/repo"
+    shell_commands:
+      - sh setup.sh
+    build_targets:
+      - "//..."
+      - "//:bin_deploy.jar"
+      - "@rules_java//java/..."
+  macos:
+    name: "Bazel 7.x"
+    bazel: "7.3.2"
+    build_targets: *build_targets
+  windows:
+    name: "Bazel 7.x"
+    bazel: "7.3.2"
+    build_targets: *build_targets
+# Bazel@HEAD
+  ubuntu2004_head:
+    name: "Bazel@HEAD"
+    bazel: "544e23503e4c109335b12bfe9168a6a39c81c5b9"
+    platform: ubuntu2004
+    build_targets: *build_targets
+  ubuntu2004_integration_head:
+    name: "Bazel@HEAD Integration"
+    bazel: "544e23503e4c109335b12bfe9168a6a39c81c5b9"
+    platform: ubuntu2004
+    working_directory: "test/repo"
+    shell_commands:
+      - sh setup.sh
+    build_targets:
+      - "//..."
+      - "//:bin_deploy.jar"
+      - "@rules_java//java/..."
+  macos_head:
+    name: "Bazel@HEAD"
+    bazel: "544e23503e4c109335b12bfe9168a6a39c81c5b9"
+    platform: macos
+    build_targets: *build_targets
+  windows_head:
+    name: "Bazel@HEAD"
+    bazel: "544e23503e4c109335b12bfe9168a6a39c81c5b9"
+    platform: windows
+    build_targets: *build_targets
+# Bazel 6.x
+# TODO: re-enable if possible to redirect to native rule impl
+#  ubuntu2004_bazel630:
+#    name: "Bazel 6.3.0"
+#    bazel: 6.3.0
+#    platform: ubuntu2004
+#    build_targets: *build_targets
+#  macos_bazel630:
+#    name: "Bazel 6.3.0"
+#    bazel: 6.3.0
+#    platform: macos
+#    build_targets: *build_targets
+#  windows_bazel630:
+#    name: "Bazel 6.3.0"
+#    bazel: 6.3.0
+#    platform: windows
+#    build_targets: *build_targets

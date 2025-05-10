@@ -1,0 +1,18 @@
+load("@rules_java//java:defs.bzl", "java_binary", "java_library")  # copybara-use-repo-external-label
+load("@rules_java//toolchains:default_java_toolchain.bzl", "default_java_toolchain")  # copybara-use-repo-external-label
+
+java_library(
+    name = "lib",
+    srcs = glob(["src/*.java"]),
+)
+
+java_binary(
+    name = "bin",
+    main_class = "Main",
+    runtime_deps = [":lib"],
+)
+
+default_java_toolchain(
+    name = "my_funky_toolchain",
+    bootclasspath = ["@bazel_tools//tools/jdk:platformclasspath"],
+)
