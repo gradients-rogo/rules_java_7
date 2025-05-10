@@ -316,6 +316,30 @@ _REMOTE_JDK_CONFIGS_LIST = [
         urls = ["https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4+7/OpenJDK21U-jdk_s390x_linux_hotspot_21.0.4_7.tar.gz", "https://mirror.bazel.build/github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4+7/OpenJDK21U-jdk_s390x_linux_hotspot_21.0.4_7.tar.gz"],
         version = "21",
     ),
+    struct(
+        name = "remotejdk24_linux",
+        target_compatible_with = ["@platforms//os:linux", "@platforms//cpu:x86_64"],
+        sha256 = "12f6957c3a2a74d36d692cfee3aeeb949f15b5d80dad08bf0d3ed930d66d8659",
+        strip_prefix = "zulu24.30.11-ca-jdk24.0.1-linux_x64",
+        urls = ["https://cdn.azul.com/zulu/bin/zulu24.30.11-ca-jdk24.0.1-linux_x64.tar.gz"],
+        version = "24",
+    ),
+    struct(
+        name = "remotejdk24_macos_aarch64",
+        target_compatible_with = ["@platforms//os:macos", "@platforms//cpu:aarch64"],
+        sha256 = "a49b2ada029c4f2e38cdb15b4808fa29de55662d3de63286919a9df1c788cfb1",
+        strip_prefix = "zulu24.30.11-ca-jdk24.0.1-macosx_aarch64",
+        urls = ["https://cdn.azul.com/zulu/bin/zulu24.30.11-ca-jdk24.0.1-macosx_aarch64.tar.gz"],
+        version = "24",
+    ),
+    struct(
+        name = "remotejdk24_macos",
+        target_compatible_with = ["@platforms//os:macos", "@platforms//cpu:x86_64"],
+        sha256 = "56118e8996aca5779554b129d0c2595f18fffa8bc6826cbe8116f6059f4eba16",
+        strip_prefix = "zulu24.30.11-ca-jdk24.0.1-macosx_x64",
+        urls = ["https://cdn.azul.com/zulu/bin/zulu24.30.11-ca-jdk24.0.1-macosx_x64.tar.gz"],
+        version = "24",
+    ),
 ]
 
 def _make_version_to_remote_jdks():
@@ -360,6 +384,10 @@ def remote_jdk21_repos():
     """Imports OpenJDK 21 repositories."""
     _remote_jdk_repos_for_version("21")
 
+def remote_jdk24_repos():
+    """Imports OpenJDK 24 repositories."""
+    _remote_jdk_repos_for_version("24")
+
 def rules_java_dependencies():
     """An utility method to load all dependencies of rules_java.
 
@@ -371,6 +399,7 @@ def rules_java_dependencies():
     remote_jdk11_repos()
     remote_jdk17_repos()
     remote_jdk21_repos()
+    remote_jdk24_repos()
     java_tools_repos()
 
 def rules_java_toolchains(name = "toolchains"):
